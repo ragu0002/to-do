@@ -4,25 +4,31 @@ const Task = getQ(".addTask");
 const listDone = getQ(".listDone");
 const list = getQ(".list");
 
+//lager arrayet vi skal putte objektene inn i
 const taskArr = [];
+//gjør det mulig å vise arrayet i consolen
 window.taskArr = taskArr;
+//lager arrayet vi skal flytte objektene til når oppgaven er "ferdig"
 const doneArr = [];
 
 Task.addEventListener("click", addTask);
 
 function addTask() {
   console.log("add task");
-
+  //lager li elementet og gir det en class og et dataset
   const li = document.createElement("li");
   li.classList.add("element");
   li.dataset.id = "";
+  //putter elenter inne i li
   li.innerHTML = `
     <input type="checkbox" name="todoCheck">
     <input type="text">
     <button class="submit">Submit</button>
     <button class="delete">Delete</button>
   `;
+  //putter li elementet inne i listen vi allerede har hardcodet i html
   list.appendChild(li);
+  //peker på submit og delete knappene og viser dem til forskjellige fungsjoner
   const submitButton = li.querySelector(".submit");
   const deleteButton = li.querySelector(".delete");
   deleteButton.addEventListener("click", deleteObject);
@@ -31,24 +37,31 @@ function addTask() {
 
 function addToArr(evt) {
   console.log("add to arr");
+  //finner det nærmeste .elemtet utenfor det som bli klikket på. I dette tilfellet <li> som ligger rundt submittbutton
   const element = evt.target.closest(".element");
+  //finner inputfeltene inne i <li>-elementet
   const input = element.querySelector('input[type="text"]');
   const inputCheck = element.querySelector('input[type="checkbox"]');
   console.log("Checkbox is checked?", inputCheck.checked);
-
+  //hvis elementet allerede har en id, betyr det at det er lagt til før — da skal vi ikke legge det til i arrayet på nytt
   if (element.dataset.id) {
     console.log("Task already exists. Not adding again.");
     return;
   }
+  //lager objektet som skal inn i arrayet
   const toDoObj = {
+    //navnet er det man skrev i input feltet
     name: input.value,
+    //id er et random id nr
     id: self.crypto.randomUUID(),
     done: inputCheck.checked,
   };
+
+  //gir elementet den samme ideen som obj
   element.dataset.id = toDoObj.id;
-
+  //putter objektet i arrayet
   taskArr.push(toDoObj);
-
+  //gjør det mulig å endre på inputet og oppdatere arrayet på samme tid
   input.addEventListener("input", () => {
     const obj = taskArr.find((task) => task.id === toDoObj.id);
     if (obj) {
@@ -57,7 +70,7 @@ function addToArr(evt) {
     }
   });
   console.log("arr", taskArr);
-
+  //når brukeren klikker på checkboxen, oppdaterer vi objektets "done"-verdi og flytter li til riktig liste
   inputCheck.addEventListener("change", () => {
     const correspondingDataObject = taskArr.find((toDo) => toDo.id === toDoObj.id);
     if (correspondingDataObject) {
@@ -66,6 +79,7 @@ function addToArr(evt) {
       writeTodo(correspondingDataObject);
     }
   });
+  //flytter <li>-elementet mellom "to-do"-listen og "done"-listen basert på objektets done-status
   function writeTodo(elm) {
     const li = document.querySelector(`.element[data-id="${elm.id}"]`);
     if (!li) return;
@@ -80,11 +94,13 @@ function addToArr(evt) {
     }
   }
 }
+//fjerner <li>-elementet fra DOM-en og sletter det fra taskArr eller doneArr
 function deleteObject(evt) {
   const li = evt.target.closest(".element");
   const id = li.dataset.id;
 
   li.remove();
+  //findIndex returnerer -1 hvis objektet ikke finnes i arrayet, så vi sjekker først at det faktisk finnes før vi sletter
 
   const indexInTasks = taskArr.findIndex((task) => task.id === id);
   if (indexInTasks !== -1) {
