@@ -28,17 +28,12 @@ button {
   border: none;
   background-color: var(--background-color);
   padding: 10px;
+  cursor: pointer;
 }
 .element {
-  display: flex;
-  align-items: center; /* Vertically center items (optional) */
   gap: 10px; /* Optional spacing between items */
 }
 
-.element input[type="text"] {
-  flex: 1;
-  min-width: 0;
-}
 .list,
 .listDone {
   display: flex;
@@ -48,9 +43,15 @@ button {
 li {
   content: (var) --content;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   border-bottom: 0.5px solid var(--text-color);
+}
+
+/* Make the input expand */
+li input[type="text"] {
+  width: 100%;
+  outline: none;
 }
 .hide {
   display: none;
@@ -61,4 +62,26 @@ h1 {
   font-style: normal;
   text-transform: uppercase;
   color: var(--text-color);
+}
+.dropdown-content {
+  display: none;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.show {
+  display: block;
+}
+.content {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto; /* checkbox | input | submit | delete */
+  grid-template-rows: auto auto; /* two rows: first for inputs, second for dropdown */
+  align-items: center;
+}
+.delete {
+  opacity: 0;
+}
+li:hover .delete {
+  opacity: 1;
 }

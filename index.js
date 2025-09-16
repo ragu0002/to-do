@@ -21,26 +21,45 @@ function addTask() {
   li.dataset.id = "";
   //putter elenter inne i li
   li.innerHTML = `
+  <div class="content">
     <input type="checkbox" name="todoCheck">
-    <input type="text">
+    <input type="text" class="input-text">
     <button class="submit">Submit</button>
-    <button class="delete">Delete</button>
+    <button class="delete">x</button>
+    </div>
+    <div class="dropdown">
+    <div id="my-dropdown" class="dropdown-content">
+    <input type="date" value="2025-01-09" />
+    <input type="number" min="0" max="100" value="0">
+    </div>
+    </div>
   `;
   //putter li elementet inne i listen vi allerede har hardcodet i html
   list.appendChild(li);
   //peker på submit og delete knappene og viser dem til forskjellige fungsjoner
-  const submitButton = li.querySelector(".submit");
+  let submitButton = li.querySelector(".submit");
   const deleteButton = li.querySelector(".delete");
+  const inputText = li.querySelector(".input-text");
   deleteButton.addEventListener("click", deleteObject);
   submitButton.addEventListener("click", addToArr);
+  inputText.addEventListener("click", (evt) => {
+    const element = evt.target.closest(".element");
+    element.querySelector("#my-dropdown").classList.add("show");
+    submitButton.addEventListener("click", addToArr);
+  });
 }
 
 function addToArr(evt) {
   console.log("add to arr");
+
   //finner det nærmeste .elemtet utenfor det som bli klikket på. I dette tilfellet <li> som ligger rundt submittbutton
   const element = evt.target.closest(".element");
+  const dropdown = element.querySelector(".dropdown-content");
+  dropdown.classList.remove("show");
   //finner inputfeltene inne i <li>-elementet
   const input = element.querySelector('input[type="text"]');
+  const inputDate = element.querySelector('input[type="date"]');
+  const inputNr = element.querySelector('input[type="number"]');
   const inputCheck = element.querySelector('input[type="checkbox"]');
   console.log("Checkbox is checked?", inputCheck.checked);
   //hvis elementet allerede har en id, betyr det at det er lagt til før — da skal vi ikke legge det til i arrayet på nytt
@@ -50,8 +69,10 @@ function addToArr(evt) {
   }
   //lager objektet som skal inn i arrayet
   const toDoObj = {
-    //navnet er det man skrev i input feltet
+    //navnet og datoen som man skrev i input feltet
     name: input.value,
+    date: inputDate.value,
+    number: inputNr.value,
     //id er et random id nr
     id: self.crypto.randomUUID(),
     done: inputCheck.checked,
