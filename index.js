@@ -29,8 +29,16 @@ function addTask() {
     </div>
     <div class="dropdown">
     <div id="my-dropdown" class="dropdown-content">
+    <div class="wrapper">
+    <div class="date">
+    <p> Add date:</p>
     <input type="date" value="2025-01-09" />
+    </div>
+     <div class="number">
+    <p> Add amount:</p>
     <input type="number" min="0" max="100" value="0">
+    </div>
+    </div>
     </div>
     </div>
   `;
@@ -82,6 +90,9 @@ function addToArr(evt) {
   element.dataset.id = toDoObj.id;
   //putter objektet i arrayet
   taskArr.push(toDoObj);
+  localStorage.setItem("myData", JSON.stringify(taskArr));
+  const arrayFromLocalStorage = JSON.parse(localStorage.getItem("myData"));
+  console.log(arrayFromLocalStorage);
   //gjør det mulig å endre på inputet og oppdatere arrayet på samme tid
   input.addEventListener("input", () => {
     const obj = taskArr.find((task) => task.id === toDoObj.id);

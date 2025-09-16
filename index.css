@@ -22,14 +22,17 @@ main {
 }
 
 input,
-button {
+button,
+p {
   font-family: "Roboto", sans-serif;
   color: var(--text-color);
   border: none;
   background-color: var(--background-color);
   padding: 10px;
   cursor: pointer;
+  font-size: small;
 }
+
 .element {
   gap: 10px; /* Optional spacing between items */
 }
@@ -75,8 +78,8 @@ h1 {
 }
 .content {
   display: grid;
-  grid-template-columns: auto 1fr auto auto; /* checkbox | input | submit | delete */
-  grid-template-rows: auto auto; /* two rows: first for inputs, second for dropdown */
+  grid-template-columns: auto 1fr auto auto;
+  grid-template-rows: auto auto;
   align-items: center;
 }
 .delete {
@@ -84,4 +87,12 @@ h1 {
 }
 li:hover .delete {
   opacity: 1;
+}
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.number,
+.date {
+  display: flex;
 }
