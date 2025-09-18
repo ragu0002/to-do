@@ -1,5 +1,5 @@
 "use strict";
-import { getRandomNum, getQ } from "../utils/utils.js";
+import { getQ } from "../utils/utils.js";
 const Task = getQ(".addTask");
 const listDone = getQ(".listDone");
 const list = getQ(".list");
@@ -24,8 +24,8 @@ function addTask() {
   <div class="content">
     <input type="checkbox" name="todoCheck">
     <input type="text" class="input-text">
-    <button class="submit">Submit</button>
     <button class="delete">x</button>
+    <button class="submit">Submit</button>
     </div>
     <div class="dropdown">
     <div id="my-dropdown" class="dropdown-content">
